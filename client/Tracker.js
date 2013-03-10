@@ -18,7 +18,9 @@
 
 		document.addEventListener("mousemove", function(e){
 
-			obj.push({x: e.clientX, y: e.clientY}); 
+			var d = {x: e.clientX, y: e.clientY};
+			obj.push(d); 
+			socket.emit("mouseMv", d);
 			
 		}, false);
 	};
@@ -27,7 +29,9 @@
 
 		document.querySelector("a").addEventListener("click", function(e){
 
-				obj.push({target: e.currentTarget, x: e.clientX, y: e.clientY});
+				var d = {target: e.currentTarget, x: e.clientX, y: e.clientY};
+				obj.push(d);
+				socket.emit("click", d);
 		}, false);
 	};
 
