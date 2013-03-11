@@ -15,17 +15,24 @@
 			</nav>
 		</header>
 		<script type="text/javascript" src="http://127.0.0.1:4000/socket.io/socket.io.js"></script>
+		<script src="client/Replayer.js"></script>
 		<script>
 			var socket = io.connect('http://sol.local:4000');
 
-			socket.on("updateMouse", function(str){
+			document.addEventListener('mousemove', function(e){
 
-				console.log(str);
+				socket.emit('mouseMv', {x: e.clientX, y: e.clientY});
+			});
+
+			document.addEventListener('click', function(e){
+
+				socket.emit('getDetails', 'mousePath');
+			});
+
+			socket.on('returnDetails', function(data){
+
+				REPLAYER.replay(data);
 			});
 		</script>
-
-		<script src="client/User.js"></script>
-		<script src="client/Tracker.js"></script>
-		<script src="client/Replayer.js"></script>
 	</body>
 </html>
