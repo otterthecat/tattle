@@ -1,7 +1,7 @@
 {
   "name": "tattle",
   "title": "Tattle",
-  "description": "A way to modularize your Javascript code",
+  "description": "A tracking app to log & display user interactions.",
   "version": "0.0.1",
   "homepage": "https://github.com/otterthecat/tattle",
   "author": {
