@@ -1,6 +1,7 @@
 var io = require('socket.io').listen(4000);
-var tracker = require("./Tracker.js");
-
+//var tracker = require("./Tracker.js");
+var Tracker = require("./Tracker_Schema_Model");
+var tracker = Tracker.tracker;
 
 io.sockets.on('connection', function(socket){
 
@@ -8,20 +9,12 @@ io.sockets.on('connection', function(socket){
 	// to the mousePath array
 	socket.on('mouseMv', function(data){
 
-		tracker.pushTo('mousePath', data);
+		tracker.mousePath.push(data);
 	});
 
 
 	socket.on('getDetails', function(prop){
-
-		// if argument is not set, send full details object,
-		// otherwise send back the one that is requested
-		if(typeof prop === 'undefined'){
-
-			socket.emit('returnDetails', tracker.getDetails());
-		} else {
-
-			socket.emit('returnDetails', tracker.getDetails(prop));
-		}
+		tracker.save();
+		return tracker.find();
 	});
 });
