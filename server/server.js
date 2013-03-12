@@ -3,18 +3,26 @@ var io = require('socket.io').listen(4000);
 var Tracker = require("./Tracker_Schema_Model");
 var tracker = Tracker.tracker;
 
-io.sockets.on('connection', function(socket){
+var db = Tracker.mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
-	// when mouse is moving, add a new coord object
-	// to the mousePath array
-	socket.on('mouseMv', function(data){
+db.once('open', function callback () {
+ 
+ 	io.sockets.on('connection', function(socket){
 
-		tracker.mousePath.push(data);
-	});
+		// when mouse is moving, add a new coord object
+		// to the mousePath array
+		socket.on('mouseMv', function(data){
+
+			tracker.mousePath.push(data);
+		});
 
 
-	socket.on('getDetails', function(prop){
-		tracker.save();
-		return tracker.find();
+		socket.on('getDetails', function(prop){
+			tracker.save();
+			var blah = Tracker.Tracker_Schema.find();
+			console.log(blah);
+			return blah;
+		});
 	});
 });

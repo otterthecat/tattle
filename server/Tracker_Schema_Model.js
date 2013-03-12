@@ -18,4 +18,7 @@ var Tracker_Schema = new Schema({
 
 var Tracker = mongoose.model('Tracker', Tracker_Schema);
 
+exports.mongoose = mongoose;
+exports.Schema = Schema;
+exports.Tracker_Schema = Tracker;
 exports.tracker = new Tracker();
