@@ -7,7 +7,7 @@ var db = Tracker.mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function callback () {
- 
+
  	io.sockets.on('connection', function(socket){
 
 		// when mouse is moving, add a new coord object
@@ -17,12 +17,16 @@ db.once('open', function callback () {
 			tracker.mousePath.push(data);
 		});
 
-
+		
 		socket.on('getDetails', function(prop){
-			tracker.save();
-			var blah = Tracker.Tracker_Schema.find();
-			console.log(blah);
-			return blah;
+
+			tracker.save(function(err){
+
+				Tracker.Tracker_Schema.find(function(err, tracks){
+
+					socket.emit("returnDetails", tracks[tracks.length-1]);
+				});
+			});
 		});
 	});
 });
