@@ -1,9 +1,9 @@
 var io = require('socket.io').listen(4000);
 //var tracker = require("./Tracker.js");
-var Tracker = require("./Tracker_Schema_Model");
-var tracker = Tracker.tracker;
+var tattletale = require("./Tattletale");
+var tattler = new tattletale.model();
 
-var db = Tracker.mongoose.connection;
+var db = tattletale.mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function callback () {
@@ -14,17 +14,18 @@ db.once('open', function callback () {
 		// to the mousePath array
 		socket.on('mouseMv', function(data){
 
-			tracker.mousePath.push(data);
+			tattler.mousePath.push(data);
 		});
 
-		
+		// currently this event triggers form the index.html file
+		// by clicking anywhere within the page
 		socket.on('getDetails', function(prop){
 
-			tracker.save(function(err){
+			tattler.save(function(err){
 
-				Tracker.Tracker_Schema.find(function(err, tracks){
+				tattletale.model.find(function(err, tracks){
 
-					socket.emit("returnDetails", tracks[tracks.length-1]);
+					socket.emit("returnDetails", tracks[3]);
 				});
 			});
 		});
