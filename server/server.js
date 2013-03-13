@@ -19,13 +19,14 @@ db.once('open', function callback () {
 
 		// currently this event triggers form the index.html file
 		// by clicking anywhere within the page
-		socket.on('getDetails', function(prop){
+		socket.on('getDetails', function(data){
 
+			tattler.mousePath.push(data);
 			tattler.save(function(err){
 
 				tattletale.model.find(function(err, tracks){
 
-					socket.emit("returnDetails", tracks[3]);
+					socket.emit("returnDetails", tracks[tracks.length-1]);
 				});
 			});
 		});

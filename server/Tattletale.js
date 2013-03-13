@@ -6,7 +6,7 @@ mongoose.connect("mongodb://localhost/test");
 var Plot_Schema = new Schema({
 	x: {type: Number, default: 0},
 	y: {type: Number, default: 0},
-	el: {type: Schema.Types.Mixed, default: null}
+	clicked: {type: Boolean, default: false}
 });
 
 var Tattletale_Schema = new Schema({

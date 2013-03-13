@@ -26,7 +26,7 @@
 
 			document.addEventListener('click', function(e){
 
-				socket.emit('getDetails', 'mousePath');
+				socket.emit('getDetails', {x: e.clientX, y: e.clientY, clicked: true});
 			});
 
 			socket.on('returnDetails', function(data){

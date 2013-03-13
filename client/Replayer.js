@@ -27,6 +27,13 @@
 		var clone = _path_marker.cloneNode(false)
 		clone.style.left = _replay_data[_n].x + "px";
 		clone.style.top = _replay_data[_n].y + "px";
+		console.log(_replay_data[_n].clicked);
+		if(_replay_data[_n].clicked === true){
+
+			var el = document.elementFromPoint(_replay_data[_n - 1].x, _replay_data[_n - 1].y);
+			el.style.backgroundColor = "#ff0033";
+		}
+
 		document.querySelector('body').appendChild(clone);
 
 		_n ++;
