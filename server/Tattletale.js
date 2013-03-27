@@ -12,7 +12,9 @@ var Plot_Schema = new Schema({
 var Tattletale_Schema = new Schema({
 
 	mousePath: 		[Plot_Schema], 						// array to store mouse position as it moves
-	timestamp: 		{type: Date, default: Date.now} 	// time when tracking started for user	
+	timestamp: 		{type: Date, default: Date.now} 	// time when tracking started for user
+	browser: 		{type: String, default: 'nil'},		// string of browser type (IE, FF, Chrome, etc)
+	os: 			{type: String, default: 'nil'}		// the OS of the client's computer
 });
 
 

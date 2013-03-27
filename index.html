@@ -19,6 +19,34 @@
 		<script>
 			var socket = io.connect('http://sol.local:4000');
 
+			// when connection to socket is established
+			socket.on('connect', function(){
+
+				// set up event to recieve tattle collection
+				socket.on('returnCollections', function(data){
+
+					var sel = document.createElement('select');
+					sel.name = 'tracks';
+					var opt = document.createElement('option');
+					var clone;
+
+					for(var i = 0; i < data.length; i += 1){
+
+						clone = opt.cloneNode();
+						clone.innerHTML = data[i].timestamp;
+						clone.value = data[i].timestamp;
+
+						sel.appendChild(clone);
+					};
+
+					document.getElementsByTagName('body')[0].appendChild(sel);
+
+				});
+
+				// make call to get tattle collection
+				socket.emit('getCollections');
+			});
+
 			document.addEventListener('mousemove', function(e){
 
 				socket.emit('mouseMv', {x: e.clientX, y: e.clientY});

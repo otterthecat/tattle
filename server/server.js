@@ -30,5 +30,15 @@ db.once('open', function callback () {
 				});
 			});
 		});
+
+		// request to get tattle collection
+		socket.on('getCollections', function(){
+
+			tattletale.model.find(function(err, collections){
+
+				socket.emit('returnCollections', collections);
+			});
+		});
+
 	});
 });

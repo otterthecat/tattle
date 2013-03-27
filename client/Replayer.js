@@ -28,9 +28,7 @@
 
 		if(_replay_data[_n].clicked === true){
 
-			//var el = document.elementFromPoint(_replay_data[_n - 1].x, _replay_data[_n - 1].y);
 			clone.className = 'click';
-
 		}
 
 		clone.style.left = _replay_data[_n].x + "px";
