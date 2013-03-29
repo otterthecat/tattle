@@ -10,6 +10,16 @@ db.once('open', function callback () {
 
  	io.sockets.on('connection', function(socket){
 
+
+ 		socket.on('setBrowser', function(data){
+
+ 			tattler.browser = data.browser;
+ 			tattler.version = data.version;
+ 			tattler.os = data.os;
+ 			tattler.width = data.size.x;
+ 			tattler.height = data.size.y;
+ 		});
+
 		// when mouse is moving, add a new coord object
 		// to the mousePath array
 		socket.on('mouseMv', function(data){

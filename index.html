@@ -44,6 +44,14 @@
 
 				});
 
+
+				socket.emit('setBrowser', {
+					os: BROWSER.getOS(),
+					browser: BROWSER.getBrowser(),
+					version: BROWSER.getVersion(),
+					size: BROWSER.getSize()
+				})
+
 				// make call to get tattle collection
 				socket.emit('getCollections');
 			});
