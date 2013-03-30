@@ -13,11 +13,11 @@ db.once('open', function callback () {
 
  		socket.on('setBrowser', function(data){
 
- 			tattler.browser = data.browser;
- 			tattler.version = data.version;
- 			tattler.os = data.os;
- 			tattler.width = data.size.x;
- 			tattler.height = data.size.y;
+ 			tattler.browser.name 	= data.browser;
+ 			tattler.browser.version = data.version;
+ 			tattler.browser.os 		= data.os;
+ 			tattler.browser.width 	= data.size.x;
+ 			tattler.browser.height 	= data.size.y;
  		});
 
 		// when mouse is moving, add a new coord object
