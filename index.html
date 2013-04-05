@@ -34,16 +34,25 @@
 					for(var i = 0; i < data.length; i += 1){
 
 						clone = opt.cloneNode();
-						clone.innerHTML = data[i].timestamp;
-						clone.value = data[i].timestamp;
+						clone.innerHTML = data[i]._id;
+						clone.value = data[i]._id;
 
 						sel.appendChild(clone);
 					};
 
 					document.getElementsByTagName('body')[0].appendChild(sel);
 
+					sel.addEventListener('change', function(){
+						socket.emit('request_details', this.value);
+					});
+
 				});
 
+
+				socket.on('return_details', function(data){
+
+					REPLAYER.replay(data.mousePath);
+				});
 
 				socket.emit('setBrowser', {
 					os: BROWSER.getOS(),
@@ -55,7 +64,7 @@
 				// make call to get tattle collection
 				socket.emit('getCollections');
 			});
-
+/*
 			document.addEventListener('mousemove', function(e){
 
 				socket.emit('mouseMv', {x: e.clientX, y: e.clientY});
@@ -65,7 +74,7 @@
 
 				socket.emit('getDetails', {x: e.clientX, y: e.clientY, clicked: true});
 			});
-
+*/
 			socket.on('returnDetails', function(data){
 
 				REPLAYER.replay(data.mousePath);

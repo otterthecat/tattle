@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var ObjectId = mongoose.Types.ObjectId
 
 mongoose.connect("mongodb://localhost/test");
 
@@ -34,3 +35,4 @@ var Tattletale = mongoose.model('Tattle', Tattletale_Schema);
 exports.mongoose = mongoose;
 exports.schema = Schema;
 exports.model = Tattletale;
+exports.objectId = ObjectId;

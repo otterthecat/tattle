@@ -2,6 +2,7 @@ var io = require('socket.io').listen(4000);
 //var tracker = require("./Tracker.js");
 var tattletale = require("./Tattletale");
 var tattler = new tattletale.model();
+var objectId = tattletale.objectId;
 
 var db = tattletale.mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -48,6 +49,15 @@ db.once('open', function callback () {
 
 				socket.emit('returnCollections', collections);
 			});
+		});
+
+		socket.on('request_details', function(stuff){
+
+			tattletale.model.findOne({"_id": objectId.fromString(stuff)}, function(err, data){
+
+				socket.emit('return_details', data);
+			});
+
 		});
 
 	});
