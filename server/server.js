@@ -51,11 +51,21 @@ db.once('open', function callback () {
 			});
 		});
 
-		socket.on('request_details', function(stuff){
 
-			tattletale.model.findOne({"_id": objectId.fromString(stuff)}, function(err, data){
+		socket.on('request_details_by_browser', function(str_browser){
 
-				socket.emit('return_details', data);
+			tattler.findByBrowser(str_browser, function(data){
+
+				socket.emit('return_details_from_browser', data);
+			});
+		});
+
+
+		socket.on('request_details_by_id', function(str_id){
+
+			tattler.findById(str_id, function(data){
+
+				socket.emit('return_details_from_id', data);
 			});
 
 		});

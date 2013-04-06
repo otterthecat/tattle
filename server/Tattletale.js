@@ -27,7 +27,20 @@ var Tattletale_Schema = new Schema({
 
 Tattletale_Schema.methods.findByBrowser = function(browser_str, callback){
 
-	return this.model('Tattle').find({'browser.name': browser_str}, callback);
+	this.model('Tattle').find({'browser.name': browser_str}, function(err, data){
+
+		callback(data);
+	});
+};
+
+
+Tattletale_Schema.methods.findById = function(id, callback){
+
+
+	this.model('Tattle').findOne({"_id": ObjectId.fromString(id)}, function(err, data){
+
+		callback(data);
+	});
 };
 
 var Tattletale = mongoose.model('Tattle', Tattletale_Schema);
