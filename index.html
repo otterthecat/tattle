@@ -43,14 +43,14 @@
 					document.getElementsByTagName('body')[0].appendChild(sel);
 
 					sel.addEventListener('change', function(){
-						socket.emit('request_details', this.value);
+						socket.emit('request_details_by_id', this.value);
 					});
 
 				});
 
 
-				socket.on('return_details', function(data){
-
+				socket.on('return_details_from_id', function(data){
+					console.log(data);
 					REPLAYER.replay(data.mousePath);
 				});
 
