@@ -16,6 +16,20 @@
 	/* Private Functions
 	******************************************************* */
 
+	var _create_overlay = function(){
+
+		var div = document.createElement('div');
+		div.id = "overlay";
+		div.style.width = window.innerWidth;
+		div.style.height = window.innerHeight;
+		div.style.position = "absolute";
+		div.style.top = 0;
+		div.style.left = 0;
+
+		document.body.appendChild(div);
+	};
+
+
 	var _do_playback = function(){
 
 		if(_replay_data.length - 1 < _n){
@@ -28,13 +42,21 @@
 
 		if(_replay_data[_n].clicked === true){
 
+			var overlay = document.querySelector('#overlay');
+			overlay.className += " hide";
+
+			var el = document.elementFromPoint(_replay_data[_n].x, _replay_data[_n].y);
+			el.click();
+			
 			clone.className = 'click';
+
+			overlay.className = overlay.className.substr(0, (overlay.className.length-5));
 		}
 
 		clone.style.left = _replay_data[_n].x + "px";
 		clone.style.top = _replay_data[_n].y + "px";
 
-		document.querySelector('body').appendChild(clone);
+		document.querySelector('#overlay').appendChild(clone);
 
 		_n ++;
 	};
@@ -49,6 +71,7 @@
 		replay: function(obj){
 
 			_replay_data = obj;
+			_create_overlay();
 			_interval = window.setInterval(_do_playback, _speed);
 		},
 
