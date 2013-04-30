@@ -67,8 +67,6 @@ db.once('open', function callback () {
 
 				socket.emit('return_details_from_id', data);
 			});
-
 		});
-
 	});
 });
