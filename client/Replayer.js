@@ -1,85 +1,91 @@
 (function(){
 
-	/* Private Properties
-	******************************************************* */
+    /* Private Properties
+    ******************************************************* */
 
-	var _replay_data 	= null;
+    var _replay_data    = null;
 
-	var _path_marker 	= document.createElement('div');
-	_path_marker.className = "dot";
+    var _path_marker    = document.createElement('div');
+    _path_marker.className = "dot";
 
-	var _interval 		= null;
-	var _speed			= 50
-	var _n 				= 0;
-
-
-	/* Private Functions
-	******************************************************* */
-
-	var _create_overlay = function(){
-
-		var div = document.createElement('div');
-		div.id = "overlay";
-		div.style.width = window.innerWidth;
-		div.style.height = window.innerHeight;
-		div.style.position = "absolute";
-		div.style.top = 0;
-		div.style.left = 0;
-
-		document.body.appendChild(div);
-	};
+    var _interval       = null;
+    var _speed          = 50
+    var _n              = 0;
 
 
-	var _do_playback = function(){
+    /* Private Functions
+    ******************************************************* */
 
-		if(_replay_data.length - 1 < _n){
-			window.clearInterval(_interval);
-			return false;
-		}
+    var _create_overlay = function(){
 
-		// clone node - do not got deep
-		var clone = _path_marker.cloneNode(false)
+        var div = document.createElement('div');
+        div.id = "overlay";
+        div.style.width = window.innerWidth;
+        div.style.height = window.innerHeight;
+        div.style.position = "absolute";
+        div.style.top = 0;
+        div.style.left = 0;
 
-		if(_replay_data[_n].clicked === true){
+        document.body.appendChild(div);
+    };
 
-			var overlay = document.querySelector('#overlay');
-			overlay.className += " hide";
 
-			var el = document.elementFromPoint(_replay_data[_n].x, _replay_data[_n].y);
-			el.click();
-			
-			clone.className = 'click';
+    var _do_playback = function(){
 
-			overlay.className = overlay.className.substr(0, (overlay.className.length-5));
-		}
+        if(_replay_data.length - 1 < _n){
+            window.clearInterval(_interval);
+            return false;
+        }
 
-		clone.style.left = _replay_data[_n].x + "px";
-		clone.style.top = _replay_data[_n].y + "px";
+        if(_replay_data[_n].uri === window.location.pathname){
+            // clone node - do not got deep
+            var clone = _path_marker.cloneNode(false)
 
-		document.querySelector('#overlay').appendChild(clone);
+            if(_replay_data[_n].clicked === true){
 
-		_n ++;
-	};
+                var overlay = document.querySelector('#overlay');
+                overlay.className += " hide";
 
-	/* Public Object
-	******************************************************* */
-	
-	var Replayer = function(){};
+                var el = document.elementFromPoint(_replay_data[_n].x, _replay_data[_n].y);
+                el.click();
 
-	Replayer.prototype = {
+                clone.className = 'click';
 
-		replay: function(obj){
+                overlay.className = overlay.className.substr(0, (overlay.className.length-5));
+            }
 
-			_replay_data = obj;
-			_create_overlay();
-			_interval = window.setInterval(_do_playback, _speed);
-		},
+            if(_replay_data[_n].scrollY !== window.scrollY){
 
-		stop: function(){
+                window.scrollTo(0, _replay_data[_n].scrollY);
+            }
 
-			window.clearInterval(_interval);
-		}
-	};
+            clone.style.left = _replay_data[_n].x + "px";
+            clone.style.top = _replay_data[_n].y + "px";
 
-	window.REPLAYER = new Replayer();
+            document.querySelector('#overlay').appendChild(clone);
+        }
+        _n ++;
+    };
+
+    /* Public Object
+    ******************************************************* */
+
+    var Replayer = function(){};
+
+    Replayer.prototype = {
+
+        replay: function(obj){
+
+            _replay_data = obj;
+            _create_overlay();
+            _interval = window.setInterval(_do_playback, _speed);
+        },
+
+        stop: function(){
+
+            window.clearInterval(_interval);
+        }
+    };
+
+    window.REPLAYER = new Replayer();
 })();

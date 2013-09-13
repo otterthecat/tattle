@@ -9,64 +9,79 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function callback () {
 
- 	io.sockets.on('connection', function(socket){
+    io.sockets.on('connection', function(socket){
 
 
- 		socket.on('setBrowser', function(data){
+        socket.on('setBrowser', function(data){
 
- 			tattler.browser.name 	= data.browser;
- 			tattler.browser.version = data.version;
- 			tattler.browser.os 		= data.os;
- 			tattler.browser.width 	= data.size.x;
- 			tattler.browser.height 	= data.size.y;
- 		});
+            tattler.browser.name    = data.browser;
+            tattler.browser.version = data.version;
+            tattler.browser.os      = data.os;
+            tattler.browser.width   = data.size.x;
+            tattler.browser.height  = data.size.y;
+        });
 
-		// when mouse is moving, add a new coord object
-		// to the mousePath array
-		socket.on('mouseMv', function(data){
+        // when mouse is moving, add a new coord object
+        // to the mousePath array
+        socket.on('mouseMv', function(data){
 
-			tattler.mousePath.push(data);
-		});
+            tattler.mousePath.push(data);
+        });
 
-		// currently this event triggers form the index.html file
-		// by clicking anywhere within the page
-		socket.on('getDetails', function(data){
+        socket.on('scroll', function(data){
 
-			tattler.mousePath.push(data);
-			tattler.save(function(err){
+            tattler.mousePath.push(data);
+        });
 
-				tattletale.model.find(function(err, tracks){
+        socket.on('passUri', function(uri){
 
-					socket.emit("returnDetails", tracks[tracks.length-1]);
-				});
-			});
-		});
+            if(!tattler.hasUri(uri.data)){
 
-		// request to get tattle collection
-		socket.on('getCollections', function(){
+                var o = {};
+                o[uri.data] = [];
+                tattletale.schema.add(o);
+            }
+        });
 
-			tattletale.model.find(function(err, collections){
+        // currently this event triggers form the index.html file
+        // by clicking anywhere within the page
+        socket.on('getDetails', function(data){
 
-				socket.emit('returnCollections', collections);
-			});
-		});
+            tattler.mousePath.push(data);
+            tattler.save(function(err){
+
+                tattletale.model.find(function(err, tracks){
+
+                    socket.emit("returnDetails", tracks[tracks.length-1]);
+                });
+            });
+        });
+
+        // request to get tattle collection
+        socket.on('getCollections', function(){
+
+            tattletale.model.find(function(err, collections){
+
+                socket.emit('returnCollections', collections);
+            });
+        });
 
 
-		socket.on('request_details_by_browser', function(str_browser){
+        socket.on('request_details_by_browser', function(str_browser){
 
-			tattler.findByBrowser(str_browser, function(data){
+            tattler.findByBrowser(str_browser, function(data){
 
-				socket.emit('return_details_from_browser', data);
-			});
-		});
+                socket.emit('return_details_from_browser', data);
+            });
+        });
 
 
-		socket.on('request_details_by_id', function(str_id){
+        socket.on('request_details_by_id', function(str_id){
 
-			tattler.findById(str_id, function(data){
+            tattler.findById(str_id, function(data){
 
-				socket.emit('return_details_from_id', data);
-			});
-		});
-	});
+                socket.emit('return_details_from_id', data);
+            });
+        });
+    });
 });
